@@ -83,7 +83,7 @@ export default function SignIn() {
             />
             <TextField
               onChange={(event) => {
-                setUser({ ...user, email: event.target.value })
+                setUser({ ...user, password: event.target.value })
               }}
               margin="normal"
               required

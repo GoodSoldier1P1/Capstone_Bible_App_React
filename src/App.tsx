@@ -1,12 +1,14 @@
 import Login from "./Form/Login"
 import Signup from "./Form/Signup"
+import Home from "./Home/Home"
 
 function App() {
 
   return (
     <>
-      <Login />
+      {/* <Login /> */}
       {/* <Signup /> */}
+      <Home />
     </>
   )
 }
