@@ -107,6 +107,7 @@ export default function SignIn() {
               label="Remember me"
             />
             <Button
+              onClick={() => {navigate("/search")}}
               type="submit"
               fullWidth
               variant="contained"
