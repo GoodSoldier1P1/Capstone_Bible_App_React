@@ -1,0 +1,64 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: 'Diphylleia', serif;
+}
+
+body{
+    background: #7F7FD5;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    
+}
+
+.card {
+    text-align: center;
+    margin-top: 15vh;
+    width: 100% !important;
+    height: auto !important;
+    text-shadow: 1px 1.3px;
+}
+
+.card-text{
+    /* border: 1px solid black; */
+    margin-bottom: 10px;
+}
+
+.nav {
+    text-align: right;
+}
+
+#signup {
+    margin: 0 10% 0 5%;
+    font-size: larger;
+    border: 1px solid black;
+    padding: 15px;
+    border-radius: 10%;
+    background-color: #04bdfe;
+    text-decoration: none;
+    text-shadow: 1px 1px;
+    color: black;
+}
+
+#login {
+    font-size: larger;
+    border: 1px solid black;
+    padding: 15px;
+    border-radius: 10%;
+    background-color: #04bdfe;
+    text-decoration: none;
+    text-shadow: 1px 1px;
+    color: black;
+}
+
+.footer { 
+    text-align: right;
+    margin-top: 40vh;
+    margin-right: 3%;
+}
+
+#logo {
+    height: 55px;
+    width: auto;
+    margin: 10px 10px 0 10px;
+}

@@ -38,21 +38,24 @@ export default function SignIn() {
     password: "",
   });
 
+  const navigate = useNavigate()
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     signInWithEmailAndPassword(auth, user.email.trim(), user.password)
-    .then((userCredential) => {
-      const user = userCredential.user;
-      console.log("Sign in:", user)
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.error(`${errorCode}: ${errorMessage}`)
-    });
+      .then((userCredential) => {
+        const user = userCredential.user;
+        navigate('/')
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.error(`${errorCode}: ${errorMessage}`)
+      });
   };
 
   return (
+
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
@@ -64,6 +67,11 @@ export default function SignIn() {
             alignItems: 'center',
           }}
         >
+          <div>
+            <Link rel="stylesheet" href="/" >
+              <img src="./src/assets/Emanuel.jpg" alt="Emanuel" id="logo" />
+            </Link>
+          </div>
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
@@ -113,7 +121,7 @@ export default function SignIn() {
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/signup" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>

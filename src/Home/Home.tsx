@@ -1,45 +1,87 @@
-import { useState } from "react"
+import { useEffect, useState, useRef } from "react";
+import './Home.css'
+import Link from '@mui/material/Link';
+import { useNavigate } from "react-router-dom";
 
-interface Random {
-    randomText: string,
-    randomVerse: number,
-    randomChapter: number,
-    randomBook: string,
+
+interface Bible {
+    verseText: string;
+    book: string;
+    chapter: number;
+    verse: number;
 }
 
 const Home = () => {
+    const [verse, setVerse] = useState<Bible>({
+        verseText: '',
+        book: '',
+        chapter: 0,
+        verse: 0
+    });
 
-    const [random, setRandom] = useState<Random>({
-        randomText: '',
-        randomVerse: 0,
-        randomChapter: 0,
-        randomBook: '',
-    })
+    const navigate = useNavigate()
 
-    const randomVerse = async () => {
-        const randomResponse = await fetch('http://127.0.0.1:5000', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(randomVerse)
-        })
+    const isMounted = useRef(true);
 
-        const randomData = await randomResponse.json()
-        console.log(randomData)
-        let text = setRandom({...random, randomText: randomData.verses[0].text})
-        let verse = setRandom({...random, randomVerse: randomData.verses[0].verse})
-        let chapter = setRandom({...random, randomChapter: randomData.verses[0].chapter})
-        let book = setRandom({...random, randomBook: randomData.verses[0].book_name})
-    }
+    useEffect(() => {
+        if (isMounted.current) {
+            const getVerse = async () => {
+                try {
+                    const response = await fetch(`http://127.0.0.1:5000`);
+                    if (response.ok) {
+                        const data = await response.json();
+                        setVerse({
+                            verseText: data.randomVerseText,
+                            book: data.RandomBook,
+                            chapter: data.RandomChapter,
+                            verse: data.randomVerse
+                        });
+                    }
+                } catch (error) {
+                    console.error("An error occurred during the fetch:", error);
+                }
+            };
+
+            getVerse();
+            isMounted.current = false; // Set isMounted to false after the initial run.
+        }
+    }, []); // Empty dependency array means the effect runs only once.
 
     return (
         <>
-            <div id="verseText">
-                
+            <div>
+                <Link rel="stylesheet" href="/" >
+                    <img src="./src/assets/Emanuel.jpg" alt="Emanuel" id="logo" />
+                </Link>
             </div>
 
-            <div id="verseInfo">
+            <div className="nav">
+                <div>
+                    <Link href="/login" variant="body2" id="login">
+                        {" Login "}
+                    </Link>
 
+                    <Link href="/signup" variant="body2" id="signup">
+                        {" Signup"}
+                    </Link>
+                </div>
             </div>
+
+            {verse.verseText &&
+                <div className="card" style={{ width: '18rem' }}>
+                    <div className="card-body mx-auto">
+                        <h1 className="card-text">{verse.verseText}</h1>
+                        <h3 className="card-title">{verse.book} {verse.chapter}: {verse.verse}</h3>
+                    </div>
+                </div>
+            }
+
+            <div className="footer">
+                <p className="Copy">
+                    © GoodSoldier1P1_7, 2023 | Verse Credit: <a href="https://bible-api.com" target="_blank">https://bible-api.com</a>
+                </p>
+            </div>
+
         </>
     )
 }

@@ -35,6 +35,8 @@ export default function Signup() {
         password: "",
     });
 
+    const navigate = useNavigate()
+
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         createUserWithEmailAndPassword(auth, user.email, user.password)
@@ -42,6 +44,7 @@ export default function Signup() {
                 // Signed up 
                 const user = userCredential.user;
                 alert(`Thank you for signing up ${user}`)
+                navigate('/login')
             })
             .catch((error) => {
                 const errorCode = error.code;
@@ -62,13 +65,18 @@ export default function Signup() {
                         alignItems: 'center',
                     }}
                 >
+                    <div>
+                        <Link rel="stylesheet" href="/" >
+                            <img src="./src/assets/Emanuel.jpg" alt="Emanuel" id="logo" />
+                        </Link>
+                    </div>
                     <Typography component="h1" variant="h5">
                         Sign Up
                     </Typography>
                     <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                         <TextField
                             onChange={(event) => {
-                                setUser({...user, email: event.target.value})
+                                setUser({ ...user, email: event.target.value })
                             }}
                             margin="normal"
                             required
@@ -81,7 +89,7 @@ export default function Signup() {
                         />
                         <TextField
                             onChange={(event) => {
-                                setUser({...user, password: event.target.value})
+                                setUser({ ...user, password: event.target.value })
                             }}
                             margin="normal"
                             required
@@ -107,7 +115,7 @@ export default function Signup() {
                                 </Link>
                             </Grid>
                             <Grid item>
-                                <Link href="#" variant="body2">
+                                <Link href="/login" variant="body2">
                                     {"Already have an account? Login!"}
                                 </Link>
                             </Grid>
