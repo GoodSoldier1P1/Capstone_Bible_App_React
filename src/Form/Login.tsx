@@ -10,7 +10,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { auth } from '../firebase';
 import "./Login.css"
 import { useNavigate } from 'react-router-dom';
@@ -107,7 +107,7 @@ export default function SignIn() {
               label="Remember me"
             />
             <Button
-              onClick={() => {navigate("/search")}}
+              onClick={() => { navigate("/search") }}
               type="submit"
               fullWidth
               variant="contained"

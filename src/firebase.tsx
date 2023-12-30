@@ -4,6 +4,7 @@ import { getAnalytics } from "firebase/analytics";
 // TODO: Add SDKs for Firebase products that you want to use
 import { getAuth } from "firebase/auth";
 import { GoogleAuthProvider } from "firebase/auth/cordova";
+import { getFirestore } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -20,5 +21,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 
+
+export const db = getFirestore(app)
 export const auth = getAuth(app);
 export const provider = new GoogleAuthProvider()

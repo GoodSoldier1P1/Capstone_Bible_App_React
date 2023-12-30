@@ -1,0 +1,80 @@
+.searchBar {
+    text-align: center;
+    padding: 5%;
+    height: 10vh;
+    /* border-top: 1px solid black; */
+}
+
+.searchLabel {
+    font-size: x-large;
+}
+
+.searchInput {
+    padding: 0.5%;
+    width: 25%;
+}
+
+.searchBtn {
+    background-color: #04bdfe;
+    padding: 0.5%;
+    margin: 0 0 0 15px;
+    font-size: large;
+    border: 1px solid black;
+    padding: 0.3%;
+    border-radius: 10%;
+    background-color: #04bdfe;
+    text-decoration: none;
+    text-shadow: 1px 1px;
+    color: black;
+    font-variant: small-caps;
+}
+
+.card {
+    text-align: center;
+    font-size: x-large;
+    /* border: 1px solid black; */
+    margin-bottom: 2vh;
+    /* padding: 1%; */
+}
+
+.nav {
+    text-align: right;
+}
+
+#logout {
+    margin: 0 10% 0 5%;
+    font-size: larger;
+    border: 1px solid black;
+    padding: 15px;
+    border-radius: 10%;
+    background-color: rgb(255, 83, 83);
+    text-decoration: none;
+    text-shadow: 1px 1px;
+    color: black;
+}
+
+#profile {
+    font-size: larger;
+    border: 1px solid black;
+    padding: 15px;
+    border-radius: 10%;
+    background-color: #04bdfe;
+    text-decoration: none;
+    text-shadow: 1px 1px;
+    color: black;
+}
+
+#saveBtn,
+#shareBtn,
+#favoriteBtn {
+    font-size: large;
+    border: 1px solid black;
+    padding: 0.3%;
+    border-radius: 10%;
+    background-color: #04bdfe;
+    text-decoration: none;
+    text-shadow: 1px 1px;
+    color: black;
+    margin: 5vh 5% 0 20%;
+    font-variant: small-caps;
+}

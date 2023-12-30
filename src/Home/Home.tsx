@@ -2,6 +2,8 @@ import { useEffect, useState, useRef } from "react";
 import './Home.css'
 import Link from '@mui/material/Link';
 import { useNavigate } from "react-router-dom";
+import { collection, addDoc, setDoc, doc } from "firebase/firestore";
+import { db } from "../firebase";
 
 
 interface Bible {
@@ -9,6 +11,7 @@ interface Bible {
     book: string;
     chapter: number;
     verse: number;
+    reference: string;
 }
 
 const Home = () => {
@@ -16,7 +19,8 @@ const Home = () => {
         verseText: '',
         book: '',
         chapter: 0,
-        verse: 0
+        verse: 0,
+        reference: ''
     });
 
     const navigate = useNavigate()
@@ -34,6 +38,13 @@ const Home = () => {
                             verseText: data.randomVerseText,
                             book: data.RandomBook,
                             chapter: data.RandomChapter,
+                            verse: data.randomVerse,
+                            reference: data.reference
+                        });
+                        await setDoc(doc(db, 'verses', data.reference), {
+                            text: data.randomVerseText,
+                            book: data.RandomBook,
+                            chapter: data.RandomChapter,
                             verse: data.randomVerse
                         });
                     }
@@ -47,6 +58,7 @@ const Home = () => {
         }
     }, []); // Empty dependency array means the effect runs only once.
 
+
     return (
         <>
             <div>
@@ -57,11 +69,11 @@ const Home = () => {
 
             <div className="nav">
                 <div>
-                    <Link href="/login" variant="body2" id="login">
+                    <Link href="/login" id="login">
                         {" Login "}
                     </Link>
 
-                    <Link href="/signup" variant="body2" id="signup">
+                    <Link href="/signup" id="signup">
                         {" Signup"}
                     </Link>
                 </div>
@@ -71,7 +83,7 @@ const Home = () => {
                 <div className="card" style={{ width: '18rem' }}>
                     <div className="card-body mx-auto">
                         <h1 className="card-text">{verse.verseText}</h1>
-                        <h3 className="card-title">{verse.book} {verse.chapter}: {verse.verse}</h3>
+                        <h3 className="card-title">{verse.reference}</h3>
                     </div>
                 </div>
             }
