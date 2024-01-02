@@ -19,20 +19,20 @@ body{
 }
 
 .card-text{
-    /* border: 1px solid black; */
     margin-bottom: 10px;
 }
 
 .nav {
     text-align: right;
     border-bottom: 1px solid black;
+    /* border: 1px solid black; */
 }
 
 #signup {
     margin: 0 10% 0 5%;
     font-size: larger;
     border: 1px solid black;
-    padding: 15px;
+    padding: 10px;
     border-radius: 10%;
     background-color: #04bdfe;
     text-decoration: none;
@@ -43,7 +43,7 @@ body{
 #login {
     font-size: larger;
     border: 1px solid black;
-    padding: 15px;
+    padding: 10px;
     border-radius: 10%;
     background-color: #04bdfe;
     text-decoration: none;
@@ -58,6 +58,8 @@ body{
 }
 
 #logo {
+    border: 1px solid black;
+    display: inline;
     height: 55px;
     width: auto;
     margin: 10px 10px 0 10px;

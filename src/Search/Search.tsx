@@ -5,8 +5,8 @@ import Link from '@mui/material/Link';
 import { signOut, getAuth, onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "../firebase";
 import { doc, setDoc } from "firebase/firestore";
-import { addToActivityFeed } from "./FirestoreHelper/FirestoreHelper";
-import MaterialUIModal from "./Modals/MuiModal";
+import { addToActivityFeed } from "../FirestoreHelper/FirestoreHelper";
+import MaterialUIModal from "../Modals/MuiModal";
 
 interface Bible {
     verseText: string;
@@ -139,6 +139,10 @@ const Search = (props: any) => {
 
             <div className="nav">
                 <div>
+                    <Link href="/activityFeed" variant="body2" id="feed">
+                        {" Activity Feed "}
+                    </Link>
+                    
                     <Link href="#" variant="body2" id="profile">
                         {" Profile "}
                     </Link>
@@ -146,6 +150,7 @@ const Search = (props: any) => {
                     <Link href="#" variant="body2" id="logout" onClick={handleLogout}>
                         {" Logout "}
                     </Link>
+
                 </div>
             </div>
 

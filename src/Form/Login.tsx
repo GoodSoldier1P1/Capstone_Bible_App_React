@@ -10,7 +10,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, updateCurrentUser } from 'firebase/auth';
 import { auth } from '../firebase';
 import "./Login.css"
 import { useNavigate } from 'react-router-dom';
@@ -62,7 +62,7 @@ export default function SignIn() {
     signInWithEmailAndPassword(auth, user.email.trim(), user.password)
       .then((userCredential) => {
         const user = userCredential.user;
-        console.log(user)
+        console.log(user.uid)
         if (user) {
           navigate('/')
         } else {

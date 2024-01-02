@@ -17,8 +17,12 @@ function App() {
       if (user) {
         console.log(user.uid)
         setUserId(user.uid);
+      } else {
+        setUserId(null);
       }
     });
+
+    return () => unsubscribe()
   }, []);
 
   console.log(userId)

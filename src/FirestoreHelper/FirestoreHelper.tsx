@@ -1,5 +1,5 @@
 import { setDoc, serverTimestamp, doc } from "firebase/firestore"
-import { db } from "../../firebase";
+import { db } from "../firebase";
 
 interface VerseData {
     verseText: string;
@@ -9,7 +9,12 @@ interface VerseData {
     reference: string;
 }
 
-export const addToActivityFeed = async (verseData: VerseData, userId: string, comment: string) => {
+interface User {
+    firstName: string;
+    lastName: string;
+}
+
+export const addToActivityFeed = async (verseData: VerseData, user: User, comment: string) => {
     try {
         await setDoc(doc(db, 'activityFeed', comment), {
             verseData: verseData,
