@@ -10,7 +10,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import { auth } from '../firebase';
 import "./Login.css"
 import { useNavigate } from 'react-router-dom';
@@ -40,12 +40,34 @@ export default function SignIn() {
 
   const navigate = useNavigate()
 
+  React.useEffect(() => {
+    const auth = getAuth();
+
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const userId = user.uid
+        console.log("User ID: ", userId)
+
+        navigate("/", {state: { userId } });
+      } else {
+        console.log("User is signed out...Still")
+      }
+    });
+
+    return () => unsubscribe();
+  }, [navigate])
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     signInWithEmailAndPassword(auth, user.email.trim(), user.password)
       .then((userCredential) => {
         const user = userCredential.user;
-        navigate('/')
+        console.log(user)
+        if (user) {
+          navigate('/')
+        } else {
+          console.error("User not signing in.")
+        }
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -53,6 +75,8 @@ export default function SignIn() {
         console.error(`${errorCode}: ${errorMessage}`)
       });
   };
+
+
 
   return (
 
@@ -73,9 +97,9 @@ export default function SignIn() {
             </Link>
           </div>
           <Typography component="h1" variant="h5">
-            Sign in
+            <h1>Sign in</h1>
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <Box className='box' component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
               onChange={(event) => {
                 setUser({ ...user, email: event.target.value })
@@ -107,23 +131,24 @@ export default function SignIn() {
               label="Remember me"
             />
             <Button
-              onClick={() => { navigate("/search") }}
+              onClick={() => { navigate("/search",) }}
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              className='button'
             >
               Sign In
             </Button>
             <Grid container>
               <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
+                <Link href="#" variant="body2" className='links'>
+                  <strong>Forgot password?</strong>
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="/signup" variant="body2">
-                  {"Don't have an account? Sign Up"}
+                <Link href="/signup" variant="body2" className='links'>
+                  <strong>{"Don't have an account? Sign Up"}</strong>
                 </Link>
               </Grid>
             </Grid>

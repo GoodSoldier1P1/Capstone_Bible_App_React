@@ -1,10 +1,12 @@
-import { useEffect, useRef, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import './Search.css'
 import Link from '@mui/material/Link';
-import { signOut } from "firebase/auth";
+import { signOut, getAuth, onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "../firebase";
-import { addDoc, collection, getDocs, doc, setDoc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
+import { addToActivityFeed } from "./FirestoreHelper/FirestoreHelper";
+import MaterialUIModal from "./Modals/MuiModal";
 
 interface Bible {
     verseText: string;
@@ -13,7 +15,7 @@ interface Bible {
     verse: number;
     reference: string
 }
-const Search = () => {
+const Search = (props: any) => {
 
     const [searchQuery, setSearchQuery] = useState("");
     const [verse, setVerse] = useState<Bible>({
@@ -47,16 +49,19 @@ const Search = () => {
                     verse: data.verse,
                     reference: data.reference
                 });
-                
+
                 await setDoc(doc(db, 'verses', data.reference), {
                     text: data.text,
                     book: data.book,
                     chapter: data.chapter,
                     verse: data.verse
                 });
+
+                setVerseLoading(false);
             }
         } catch (error) {
             console.error("An error occurred during the fetch:", error);
+            setVerseLoading(false);
         }
     };
 
@@ -64,23 +69,25 @@ const Search = () => {
         if (isMounted.current) {
             getVerse();
             isMounted.current = false;
+        } else {
+            setVerseLoading(false);
         }
     }, []);
 
-    const handleSubmit = (event) => {
+    const handleSubmit = (event: FormEvent) => {
         event.preventDefault();
         getVerse(); // Now getVerse is accessible within handleFormSubmit
     };
 
-    const handleChange = (event) => {
+    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         setSearchQuery(event.target.value);
     };
 
-    const handleClick = (event) => {
+    const handleClick = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
         event.preventDefault();
     }
 
-    const handleLogout = (event) => {
+    const handleLogout = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
         event.preventDefault()
         signOut(auth)
             .then(() => {
@@ -91,6 +98,34 @@ const Search = () => {
                 const errorMessage = error.message;
                 console.error(`${errorCode}: ${errorMessage}`)
             })
+    }
+
+    const [showModal, setShowModal] = useState(false);
+    const [verseLoading, setVerseLoading] = useState(true);
+
+    const handleShare = () => {
+        if (verse && Object.keys(verse).length > 0) {
+            setShowModal(true);
+        } else {
+            setVerseLoading(true);
+            getVerse();
+        }
+    };
+
+    const handleCloseModal = () => {
+        setShowModal(false);
+    };
+
+    const handlePostComment = (comment: string) => {
+
+        const userId = props.location?.state?.userId;
+        console.log("userId: ", userId)
+
+        if (verse && Object.keys(verse).length > 0) {
+            addToActivityFeed(verse, userId, comment);
+        } else {
+            console.error("Verse Data is not available")
+        }
     }
 
     return (
@@ -134,20 +169,26 @@ const Search = () => {
                         <h3 className="card-title">{verse.reference}</h3>
                     </div>
 
+                    <Link href="#" id="shareBtn" onClick={handleShare}>
+                        {" Share "}
+                    </Link>
+
+                    <MaterialUIModal
+                        open={showModal}
+                        handleClose={handleCloseModal}
+                        handlePostComment={handlePostComment}
+                    />
+
+                    <Link href="#" id="saveBtn" onClick={handleClick}>
+                        {" Save "}
+                    </Link>
+
+                    <Link href="#" id="favoriteBtn" onClick={handleClick}>
+                        {" Favorite "}
+                    </Link>
+
                 </div>
             }
-            <Link href="#" id="shareBtn" onClick={handleClick}>
-                {" Share "}
-            </Link>
-
-            <Link href="#" id="saveBtn" onClick={handleClick}>
-                {" Save "}
-            </Link>
-
-            <Link href="#" id="favoriteBtn" onClick={handleClick}>
-                {" Favorite "}
-            </Link>
-
             <div className="footer">
                 <p className="Copy">
                     © GoodSoldier1P1_7, 2023 | Verse Credit: <a href="https://bible-api.com" target="_blank">https://bible-api.com</a>

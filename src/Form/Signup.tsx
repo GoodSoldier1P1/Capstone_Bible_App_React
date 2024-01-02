@@ -10,8 +10,9 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import "./Login.css"
 import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../firebase';
+import { auth, db } from '../firebase';
 import { useNavigate } from 'react-router-dom';
+import { doc, setDoc } from 'firebase/firestore';
 
 function Copyright(props: any) {
     return (
@@ -28,7 +29,17 @@ function Copyright(props: any) {
 
 const defaultTheme = createTheme();
 
+interface NewUser {
+    firstName: string
+    lastName: string
+}
+
 export default function Signup() {
+
+    const [newUser, setNewUser] = React.useState<NewUser>({
+        firstName: "",
+        lastName: ""
+    })
 
     const [user, setUser] = React.useState({
         email: "",
@@ -37,20 +48,34 @@ export default function Signup() {
 
     const navigate = useNavigate()
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSignupSuccess = (userId: string) => {
+        navigate('/login', {state: { userId }})
+    }
+
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        createUserWithEmailAndPassword(auth, user.email, user.password)
-            .then((userCredential) => {
-                // Signed up 
-                const user = userCredential.user;
-                alert(`Thank you for signing up ${user}`)
-                navigate('/login')
-            })
-            .catch((error) => {
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                alert(`${errorCode}: ${errorMessage}`)
-            });
+        try {
+            const userCredential = await createUserWithEmailAndPassword(auth, user.email, user.password)
+                    // Signed up 
+                    const userId = userCredential.user.uid
+                    console.log(userId)
+
+                    await setDoc(doc(db, 'newUser', userId), {
+                        firstName: newUser.firstName,
+                        lastName: newUser.lastName
+                    })
+
+                    handleSignupSuccess(userId)
+                } catch (error) {
+                    if (error instanceof Error && 'code' in error && 'message' in error) {
+                        const errorCode = error.code
+                        const errorMessage = error.message
+                        alert(`${errorCode}: ${errorMessage}`)
+                    } else {
+                        console.error('An unknown error occured', error)
+                    }
+                }
+        
     };
 
     return (
@@ -70,10 +95,36 @@ export default function Signup() {
                             <img src="./src/assets/Emanuel.jpg" alt="Emanuel" id="logo" />
                         </Link>
                     </div>
-                    <Typography component="h1" variant="h5">
-                        Sign Up
+                    <Typography component="h1" variant="h5" className='pageInfo'>
+                        <h1>Sign Up</h1>
                     </Typography>
-                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }} className='box'>
+                        <TextField
+                            onChange={(event) => {
+                                setNewUser({ ...newUser, firstName: event.target.value })
+                            }}
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="firstName"
+                            label="First Name"
+                            name="firstName"
+                            autoComplete="firstName"
+                            autoFocus
+                        />
+                        <TextField
+                            onChange={(event) => {
+                                setNewUser({ ...newUser, lastName: event.target.value })
+                            }}
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="lastName"
+                            label="Last Name"
+                            name="lastName"
+                            autoComplete="lastName"
+                            autoFocus
+                        />
                         <TextField
                             onChange={(event) => {
                                 setUser({ ...user, email: event.target.value })
@@ -105,18 +156,19 @@ export default function Signup() {
                             fullWidth
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}
+                            className='button'
                         >
                             Sign Up
                         </Button>
                         <Grid container>
                             <Grid item xs>
-                                <Link href="#" variant="body2">
-                                    Forgot password?
+                                <Link href="#" variant="body2" className='links'>
+                                    <strong> Forgot password?</strong>
                                 </Link>
                             </Grid>
                             <Grid item>
-                                <Link href="/login" variant="body2">
-                                    {"Already have an account? Login!"}
+                                <Link href="/login" variant="body2" className='links'>
+                                    <strong>{"Already have an account? Login!"}</strong>
                                 </Link>
                             </Grid>
                         </Grid>

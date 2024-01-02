@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import './Home.css'
 import Link from '@mui/material/Link';
 import { useNavigate } from "react-router-dom";
-import { collection, addDoc, setDoc, doc } from "firebase/firestore";
+import { setDoc, doc } from "firebase/firestore";
 import { db } from "../firebase";
 
 
