@@ -17,14 +17,13 @@ const MaterialUIModal: React.FC<IProps> = ({ open, handleClose, handlePostCommen
 
     return (
         <Modal open={open} onClose={handleClose}>
-            <div className="myModal" style={{ padding: '15%', width: '300px', background: '#fff' }}>
+            <div className="myModal" style={{ padding: '10%', width: '300px', background: '#fff'}}>
                 <TextareaAutosize
                     value={comment}
                     onChange={(event) => setComment(event.target.value)}
-                    placeholder="Enter you Comment"
-                    style={{ width: '100%' }}
-                    cols={15}
-                    maxRows={25}
+                    placeholder=" Enter Your Comment..."
+                    style={{ width: '100%', height: '100px' }}
+                    className="textArea"
                 />
                 <Button
                     variant="contained"

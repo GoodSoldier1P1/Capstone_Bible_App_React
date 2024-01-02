@@ -1,4 +1,4 @@
-import { addDoc, collection, serverTimestamp } from "firebase/firestore"
+import { setDoc, serverTimestamp, doc } from "firebase/firestore"
 import { db } from "../../firebase";
 
 interface VerseData {
@@ -10,14 +10,8 @@ interface VerseData {
 }
 
 export const addToActivityFeed = async (verseData: VerseData, userId: string, comment: string) => {
-    const activityFeedRef = collection(db, 'activityFeed')
-
-    // console.log("userId: ", userId)
-    // console.log("verseData: ", verseData)
-    // console.log("comment: ", comment)
-
     try {
-        await addDoc(activityFeedRef, {
+        await setDoc(doc(db, 'activityFeed', comment), {
             verseData: verseData,
             comment: comment,
             timestamp: serverTimestamp(),

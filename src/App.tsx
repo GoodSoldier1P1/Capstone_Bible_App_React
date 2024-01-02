@@ -5,9 +5,10 @@ import { Route, Routes } from "react-router-dom"
 import Search from "./Search/Search"
 import { useEffect, useState } from "react"
 import { getAuth, onAuthStateChanged } from "firebase/auth"
+import Feed from "./Feed/Feed"
 
 function App() {
-  
+
   const [userId, setUserId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -19,7 +20,7 @@ function App() {
       }
     });
   }, []);
-  
+
   console.log(userId)
   return (
     <>
@@ -28,6 +29,7 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/" element={<Home />} />
         <Route path="/search" element={<Search />} />
+        <Route path="/activityFeed" element={<Feed />} />
       </Routes>
     </>
   )
