@@ -40,6 +40,11 @@ body{
     color: black;
 }
 
+#signup:hover {
+    zoom: 110%;
+    background-color: #7dd5f5;
+}
+
 #login {
     font-size: larger;
     border: 1px solid black;
@@ -49,6 +54,11 @@ body{
     text-decoration: none;
     text-shadow: 1px 1px;
     color: black;
+}
+
+#login:hover {
+    zoom: 110%;
+    background-color: #7dd5f5;
 }
 
 .footer { 

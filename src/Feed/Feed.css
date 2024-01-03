@@ -6,6 +6,7 @@
 
 .feedComment {
     text-align: center;
+    font-size: larger;
 }
 
 .feedInfo {
@@ -19,18 +20,24 @@
 
 .timestamp {
     text-align: center;
+    margin-top: 5vh;
 }
 
 #searchBtn {
     font-size: larger;
     border: 1px solid black;
-    padding: 15px;
+    padding: 3px;
     border-radius: 10%;
     background-color: #04bdfe;
     text-decoration: none;
     text-shadow: 1px 1px;
     color: black;
     margin-right: 3%;
+}
+
+#searchBtn:hover {
+    zoom: 110%;
+    background-color: #7dd5f5;
 }
 
 .feedItem {
@@ -63,8 +70,28 @@ hr {
     margin-bottom: 3vh;
 }
 
+.loadBtn:hover {
+    zoom: 110%;
+    background-color: #7dd5f5;
+    cursor: pointer;
+}
+
 .loading {
     margin-left: 43%;
     margin-top: 2vh;
     margin-bottom: 3vh;
+    font-size: larger;
+    border: 1px solid black;
+    padding: 3px;
+    border-radius: 10%;
+    background-color: #04bdfe;
+    text-decoration: none;
+    text-shadow: 1px 1px;
+    color: black;
+}
+
+.loading:hover {
+    zoom: 110%;
+    background-color: #7dd5f5;
+    cursor: pointer;
 }
