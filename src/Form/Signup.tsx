@@ -61,6 +61,7 @@ export default function Signup() {
                     console.log(userId)
 
                     await setDoc(doc(db, 'newUser', userId), {
+                        userId: userId,
                         firstName: newUser.firstName,
                         lastName: newUser.lastName
                     })

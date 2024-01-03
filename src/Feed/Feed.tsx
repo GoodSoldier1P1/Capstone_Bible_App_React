@@ -3,11 +3,12 @@ import { collection, orderBy, query, onSnapshot } from 'firebase/firestore'
 import { auth, db } from '../firebase'
 import "./Feed.css"
 import { Link } from '@mui/material';
-import { signOut } from 'firebase/auth';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 
 interface FeedEntry {
     user: {
+        userId: string;
         firstName: string;
         lastName: string;
     };
@@ -45,7 +46,13 @@ const Feed = () => {
             return unsubscribe;
         };
 
+        const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
+            console.log("Auth state changed: ", user);
+        });
+
         fetchFeedData();
+
+        return () => unsubscribeAuth();
     }, []);
 
     const loadMore = () => {
@@ -100,7 +107,9 @@ const Feed = () => {
                 <ul>
                     {feedData.slice(0, visiblePosts).map((entry, index) => (
                         <li key={index} className="feedItem">
-                            <p className="feedComment">User Comment: {entry.comment}</p>
+                            {entry.user && (
+                            <p className="feedComment">{entry.user.firstName}: {entry.comment}</p>
+                            )}
                             <p className="verseInfo">{entry.verseData.verseText}</p>
                             <p className="verseInfo">{entry.verseData.reference}</p>
                             <p className="timestamp">{entry.timestamp.toDate().toLocaleString()}</p>

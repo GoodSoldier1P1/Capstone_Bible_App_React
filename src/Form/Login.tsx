@@ -48,7 +48,7 @@ export default function SignIn() {
         const userId = user.uid
         console.log("User ID: ", userId)
 
-        navigate("/", {state: { userId } });
+        navigate("/login");
       } else {
         console.log("User is signed out...Still")
       }
@@ -59,12 +59,12 @@ export default function SignIn() {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    signInWithEmailAndPassword(auth, user.email.trim(), user.password)
+    signInWithEmailAndPassword(auth, user.email, user.password)
       .then((userCredential) => {
         const user = userCredential.user;
-        console.log(user.uid)
+        // console.log(user.uid)
         if (user) {
-          navigate('/')
+          console.log(user.uid)
         } else {
           console.error("User not signing in.")
         }

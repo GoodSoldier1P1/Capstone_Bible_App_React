@@ -4,26 +4,21 @@ import Home from "./Home/Home"
 import { Route, Routes } from "react-router-dom"
 import Search from "./Search/Search"
 import { useEffect, useState } from "react"
-import { getAuth, onAuthStateChanged } from "firebase/auth"
+import { onAuthStateChanged } from "firebase/auth"
 import Feed from "./Feed/Feed"
+import { auth } from "./firebase"
 
 function App() {
 
   const [userId, setUserId] = useState<string | null>(null);
 
-  useEffect(() => {
-    const auth = getAuth();
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        console.log(user.uid)
-        setUserId(user.uid);
-      } else {
-        setUserId(null);
-      }
-    });
-
-    return () => unsubscribe()
-  }, []);
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+    console.log(user)
+  } else {
+    console.log("User Did Not Sign In.....")
+  }
+})
 
   console.log(userId)
   return (

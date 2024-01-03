@@ -2,9 +2,9 @@ import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import './Search.css'
 import Link from '@mui/material/Link';
-import { signOut, getAuth, onAuthStateChanged } from "firebase/auth";
+import { signOut, getAuth, onAuthStateChanged, User } from "firebase/auth";
 import { auth, db } from "../firebase";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { addToActivityFeed } from "../FirestoreHelper/FirestoreHelper";
 import MaterialUIModal from "../Modals/MuiModal";
 
@@ -116,17 +116,42 @@ const Search = (props: any) => {
         setShowModal(false);
     };
 
-    const handlePostComment = (comment: string) => {
-
-        const userId = props.location?.state?.userId;
-        console.log("userId: ", userId)
-
-        if (verse && Object.keys(verse).length > 0) {
-            addToActivityFeed(verse, userId, comment);
-        } else {
-            console.error("Verse Data is not available")
-        }
+    interface AppUser {
+        userId: string;
+        firstName: string;
+        lastName: string;
     }
+    
+    const handlePostComment = async (comment: string) => {
+        const unsubscribe = onAuthStateChanged(auth, async (user) => {
+        const userId = user?.uid
+        console.log(userId)
+        console.log("userId: ", userId)
+    
+        if (userId) {
+            console.log(userId)
+            try {
+                const userDoc = await getDoc(doc(db, 'newUser', userId));
+                const user = userDoc.data() as AppUser;
+                
+                if (user) {
+                    if (verse && Object.keys(verse).length > 0) {
+                        addToActivityFeed(verse, user, comment);
+                    } else {
+                        console.error("Verse Data is not available");
+                    }
+                } else {
+                    console.error("User not found");
+                }
+            } catch (error) {
+                console.error("Error fetching user details:", error);
+            }
+        } else {
+            console.error("UserId is missing");
+        }
+    });
+    return () => unsubscribe();
+};
 
     return (
         <>

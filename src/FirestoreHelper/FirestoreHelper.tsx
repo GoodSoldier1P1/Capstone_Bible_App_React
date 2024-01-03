@@ -9,14 +9,16 @@ interface VerseData {
     reference: string;
 }
 
-interface User {
+interface AppUser {
+    userId: string;
     firstName: string;
     lastName: string;
 }
 
-export const addToActivityFeed = async (verseData: VerseData, user: User, comment: string) => {
+export const addToActivityFeed = async (verseData: VerseData, user: AppUser, comment: string) => {
     try {
         await setDoc(doc(db, 'activityFeed', comment), {
+            userName: user.firstName,
             verseData: verseData,
             comment: comment,
             timestamp: serverTimestamp(),
