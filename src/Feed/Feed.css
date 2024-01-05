@@ -95,3 +95,42 @@ hr {
     background-color: #7dd5f5;
     cursor: pointer;
 }
+
+.updateBtn {
+    background-color: #04bdfe;
+    padding: 0.5%;
+    margin: 0 0 0 15px;
+    font-size: large;
+    border: 1px solid black;
+    padding: 0.3%;
+    border-radius: 10%;
+    background-color: #04bdfe;
+    text-decoration: none;
+    text-shadow: 0.5px 0.5px;
+    color: black;
+    font-variant: small-caps;
+}
+
+.updateBtn:hover {
+    zoom: 110%;
+    background-color: #7dd5f5;
+}
+
+.deleteBtn {
+    padding: 0.5%;
+    margin: 0 0 0 75%;
+    font-size: large;
+    border: 1px solid black;
+    padding: 0.3%;
+    border-radius: 10%;
+    background-color: rgb(253, 64, 64);
+    text-decoration: none;
+    text-shadow: 0.5px 0.5px;
+    color: black;
+    font-variant: small-caps;
+}
+
+.deleteBtn:hover {
+    zoom: 110%;
+    background-color: rgb(253, 0, 0);
+}

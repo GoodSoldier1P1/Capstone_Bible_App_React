@@ -5,10 +5,11 @@ interface IProps {
     open: boolean;
     handleClose: () => void;
     handlePostComment: (comment: string) => void;
+    initialComment?: string
 }
 
-const MaterialUIModal: React.FC<IProps> = ({ open, handleClose, handlePostComment }) => {
-    const [comment, setComment] = useState('');
+const MaterialUIModal: React.FC<IProps> = ({ open, handleClose, handlePostComment, initialComment }) => {
+    const [comment, setComment] = useState(initialComment || '');
 
     const handlePost = () => {
         handlePostComment(comment);

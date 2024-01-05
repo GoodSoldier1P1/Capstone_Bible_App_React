@@ -65,6 +65,7 @@ export default function SignIn() {
         // console.log(user.uid)
         if (user) {
           console.log(user.uid)
+          navigate("/search")
         } else {
           console.error("User not signing in.")
         }
@@ -131,7 +132,6 @@ export default function SignIn() {
               label="Remember me"
             />
             <Button
-              onClick={() => { navigate("/search",) }}
               type="submit"
               fullWidth
               variant="contained"

@@ -18,7 +18,11 @@ interface AppUser {
 export const addToActivityFeed = async (verseData: VerseData, user: AppUser, comment: string) => {
     try {
         await setDoc(doc(db, 'activityFeed', comment), {
-            userName: user.firstName,
+            user: {
+                userId: user.userId,
+                firstName: user.firstName,
+                lastName: user.lastName,
+            },
             verseData: verseData,
             comment: comment,
             timestamp: serverTimestamp(),

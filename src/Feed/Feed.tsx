@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { collection, orderBy, query, onSnapshot } from 'firebase/firestore'
+import { collection, orderBy, query, onSnapshot, deleteDoc, doc, updateDoc } from 'firebase/firestore'
 import { auth, db } from '../firebase'
 import "./Feed.css"
 import { Link } from '@mui/material';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
+import MaterialUIModal from '../Modals/MuiModal';
 
 interface FeedEntry {
     user: {
@@ -79,6 +80,28 @@ const Feed = () => {
             })
     }
 
+    const [openModal, setOpenModal] = useState(false);
+    const [selectedEntry, setSelectedEntry] = useState<FeedEntry | null>(null);
+
+    const handleUpdate = (entry: FeedEntry) => {
+        console.log("Update clicked for entry: ", entry)
+        setSelectedEntry(entry);
+        setOpenModal(true);
+    }
+
+    const handleDelete = async (entry: FeedEntry) => {
+        try {
+            if (auth.currentUser && auth.currentUser.uid === entry.user.userId) {
+                await deleteDoc(doc(db, 'activityFeed', entry.comment));
+                console.log("Comment Deleted")
+            } else {
+                console.log("Unauthorized to delete this entry.");
+            }
+        } catch (error) {
+            console.error("Error deleting entry: ", error)
+        }
+    }
+
     return (
         <>
 
@@ -107,12 +130,18 @@ const Feed = () => {
                 <ul>
                     {feedData.slice(0, visiblePosts).map((entry, index) => (
                         <li key={index} className="feedItem">
-                            {entry.user && (
                             <p className="feedComment">{entry.user.firstName}: {entry.comment}</p>
-                            )}
                             <p className="verseInfo">{entry.verseData.verseText}</p>
                             <p className="verseInfo">{entry.verseData.reference}</p>
                             <p className="timestamp">{entry.timestamp.toDate().toLocaleString()}</p>
+
+                            {auth.currentUser && auth.currentUser.uid === entry.user.userId && (
+                                <>
+                                    <button onClick={() => handleUpdate(entry)} className='updateBtn'>Update</button>
+                                    <button onClick={() => handleDelete(entry)} className='deleteBtn'>Delete</button>
+                                </>
+                            )}
+
                             <hr />
                         </li>
                     ))}
@@ -126,6 +155,28 @@ const Feed = () => {
                     </button>
                 )}
             </div>
+
+            {openModal && (
+                <MaterialUIModal
+                    open={openModal}
+                    handleClose={() => setOpenModal(false)}
+                    handlePostComment={async (comment) => {
+                        if (selectedEntry) {
+                            // insert update logic
+                            const userId = selectedEntry.comment
+                            const userComment = doc(db, 'activityFeed', userId)
+                            await updateDoc(userComment, {
+                                comment: comment // fix to update var
+                            })
+
+                            const updatedEntry = { ...selectedEntry, comment }
+                            handleUpdate(updatedEntry)
+                        }
+                        setOpenModal(false)
+                    }}
+                    initialComment={selectedEntry?.comment || ''}
+                />
+            )}
         </>
     )
 }

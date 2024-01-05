@@ -121,37 +121,60 @@ const Search = (props: any) => {
         firstName: string;
         lastName: string;
     }
-    
-    const handlePostComment = async (comment: string) => {
+
+    const handlePostComment = async (comment: string, commentId?: string) => {
         const unsubscribe = onAuthStateChanged(auth, async (user) => {
-        const userId = user?.uid
-        console.log(userId)
-        console.log("userId: ", userId)
-    
-        if (userId) {
+            const userId = user?.uid
             console.log(userId)
-            try {
-                const userDoc = await getDoc(doc(db, 'newUser', userId));
-                const user = userDoc.data() as AppUser;
-                
-                if (user) {
-                    if (verse && Object.keys(verse).length > 0) {
-                        addToActivityFeed(verse, user, comment);
+            console.log("userId: ", userId)
+
+            if (userId) {
+                console.log(userId)
+                try {
+                    const userDoc = await getDoc(doc(db, 'newUser', userId));
+                    const user = userDoc.data() as AppUser;
+
+                    if (user) {
+                        if (verse && Object.keys(verse).length > 0) {
+                            addToActivityFeed(verse, user, comment);
+                        } else {
+                            console.error("Verse Data is not available");
+                        }
+
+                        if (commentId) {
+                            try {
+                                const commentDoc = doc(db, 'activityFeed', commentId);
+                                const commentSnapshot = await getDoc(commentDoc);
+                                const existingComment = commentSnapshot.data();
+
+                                if (existingComment && user && user.userId === existingComment.user.userId) {
+
+                                    console.log("Comment Updated")
+                                } else {
+                                    console.log("Unauthorized to update this comment.")
+                                }
+                            } catch (error) {
+                                console.error("error updating comment: ", error)
+                            }
+                        } else {
+                            addToActivityFeed(verse, user, comment)
+                        }
+
+
+
                     } else {
-                        console.error("Verse Data is not available");
+                        console.error("User not found");
                     }
-                } else {
-                    console.error("User not found");
+                } catch (error) {
+                    console.error("Error fetching user details:", error);
                 }
-            } catch (error) {
-                console.error("Error fetching user details:", error);
+            } else {
+                console.error("UserId is missing");
             }
-        } else {
-            console.error("UserId is missing");
-        }
-    });
-    return () => unsubscribe();
-};
+        });
+
+        return () => unsubscribe();
+    };
 
     return (
         <>
@@ -167,7 +190,7 @@ const Search = (props: any) => {
                     <Link href="/activityFeed" variant="body2" id="feed">
                         {" Activity Feed "}
                     </Link>
-                    
+
                     <Link href="#" variant="body2" id="profile">
                         {" Profile "}
                     </Link>
