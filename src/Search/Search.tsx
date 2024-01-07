@@ -2,7 +2,7 @@ import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import './Search.css'
 import Link from '@mui/material/Link';
-import { signOut, getAuth, onAuthStateChanged, User } from "firebase/auth";
+import { signOut, onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "../firebase";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { addToActivityFeed } from "../FirestoreHelper/FirestoreHelper";
@@ -16,6 +16,8 @@ interface Bible {
     reference: string
 }
 const Search = (props: any) => {
+
+    console.log(props)
 
     const [searchQuery, setSearchQuery] = useState("");
     const [verse, setVerse] = useState<Bible>({
@@ -102,6 +104,8 @@ const Search = (props: any) => {
 
     const [showModal, setShowModal] = useState(false);
     const [verseLoading, setVerseLoading] = useState(true);
+
+    console.log(verseLoading)
 
     const handleShare = () => {
         if (verse && Object.keys(verse).length > 0) {

@@ -10,6 +10,12 @@
 import {onRequest} from "firebase-functions/v2/https";
 import * as logger from "firebase-functions/logger";
 
+onRequest((request, response) => {
+    // Your onRequest logic here
+    logger.info("Request received!");
+    response.send("Hello, World!");
+});
+
 // Start writing functions
 // https://firebase.google.com/docs/functions/typescript
 

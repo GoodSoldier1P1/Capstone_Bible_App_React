@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import './Home.css'
 import Link from '@mui/material/Link';
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { setDoc, doc } from "firebase/firestore";
 import { db } from "../firebase";
 
@@ -23,7 +23,7 @@ const Home = () => {
         reference: ''
     });
 
-    const navigate = useNavigate()
+    // const navigate = useNavigate()
 
     const isMounted = useRef(true);
 

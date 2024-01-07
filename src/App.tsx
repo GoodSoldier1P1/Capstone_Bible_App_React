@@ -3,24 +3,24 @@ import Signup from "./Form/Signup"
 import Home from "./Home/Home"
 import { Route, Routes } from "react-router-dom"
 import Search from "./Search/Search"
-import { useEffect, useState } from "react"
-import { onAuthStateChanged } from "firebase/auth"
+// import { useState } from "react"
+// import { onAuthStateChanged } from "firebase/auth"
 import Feed from "./Feed/Feed"
-import { auth } from "./firebase"
+// import { auth } from "./firebase"
 
 function App() {
 
-  const [userId, setUserId] = useState<string | null>(null);
+//   const [userId, setUserId] = useState<string | null>(null);
 
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-    console.log(user)
-  } else {
-    console.log("User Did Not Sign In.....")
-  }
-})
+//   onAuthStateChanged(auth, (user) => {
+//     if (user) {
+//     console.log(user)
+//   } else {
+//     console.log("User Did Not Sign In.....")
+//   }
+// })
 
-  console.log(userId)
+  // console.log(userId)
   return (
     <>
       <Routes>
